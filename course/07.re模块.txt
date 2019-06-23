@@ -1,0 +1,116 @@
+re模块（python）
+
+	方法：
+		regex = re.compile(pattern,flags=0)
+			功能：生成正则表达式对象
+			参数：pattern		正则表达式
+				 flags		功能标志位，丰富正则表达式的匹配功能
+			返回值：返回正则表达式对象
+		>>>	compile的regex对象属性
+				regex.findall(string,pos,endpos)
+					功能：从目标字符串查找正则匹配内容
+					参数：string		目标字符串
+						pos			匹配目标的起始位置
+						endpos		匹配目标的终止位置
+					返回值：返回匹配到的内容
+						如果正则有子组，则返回子组对应内容
+					示例：见regex.py
+				split(string,pos,endpos)
+				sub(replaceStr,string,max,pos,endpos)
+				subn(replaceStr,string,max,pos,endpos)
+
+				finditer(string,pos,endpos)
+				scanner()
+				match(string,pos,endpos)
+				search(string,pos,endpos)
+
+				flags：标志位
+				pattern：正则表达式
+				groups：有多少子组
+				groupindex：捕获组形成组名和序列号的字典，组名为键，序列号（第几组）为值
+
+		re.findall(pattern,string,flags=0)
+			功能：从目标字符串查找正则匹配内容
+			参数：pattern		正则表达式
+				string		目标字符串
+				flags		标志位
+			返回值：返回匹配到的内容
+				如果正则有子组，则返回子组对应内容
+		
+		re.split(pattern,string,flags=0)
+			功能：根据正则匹配内容切割字符串
+			返回值：返回列表，列表中为切割的内容
+		
+		re.sub(pattern,replaceStr,string,max,flags=0)
+			功能：替换正则匹配到的目标子串部分
+			参数：pattern		正则表达式
+				replaceStr	要替换的内容
+				string		目标字符串
+				max			最多替换几处，默认全部替换
+				flags 		标志位
+			返回值：返回替换后的字符串
+
+		re.subn(pattern,replaceStr,string,max,flags=0)
+			功能：替换正则匹配到的目标子串部分
+			参数：pattern		正则表达式
+				replaceStr	要替换的内容
+				string		目标字符串
+				max			最多替换几处，默认全部替换
+				flags 		标志位
+			返回值：返回一个元组，为实际替换了几处和替换后的字符串
+
+	>>>	可生成match对象
+		re.finditer(pattern,string,flags=0)
+			功能：使用正则表达式匹配目标字符串
+			参数：pattern string flags
+			返回值：返回一个迭代对象，迭代到的内容是一个match对象
+
+		re.fullmatch(pattern,string,flags=0)
+			功能：完全匹配目标字符串
+			返回值：返回匹配到的match对象，如果没有匹配成功返回None
+
+		match(pattern,string,flags=0)
+			功能：从开头位置匹配目标字符串
+			返回值：返回匹配到的match对象，如果没有匹配成功返回None
+
+		search(pattern,string,flags=0)
+			功能：正则表达式匹配目标字符串，只匹配第一处
+			返回值：返回匹配到的match对象，如果没有匹配成功返回None
+
+		match对象属性
+			属性变量
+				pos 		# 匹配目标字符串的开始位置
+				endpos 		# 匹配目标字符串的结束位置
+				re 			# 正则表达式
+				string		# 目标字符串
+				lastgroup 	# 最后一组组名
+				lastindex 	# 最后一组是第几组
+				示例：见code/match1.py
+			属性方法
+				span() 		# 匹配内容的起止位置
+				start() 	# 匹配内容的开始位置
+				end() 		# 匹配内容的终止位置
+				group() 
+					功能：获取match对象对应的内容
+					参数：默认为0，表示获取整个正则表达式匹配的内容，如果为序列号或者子组名则为获取某个子组匹配的对应内容
+					返回值：返回得到的子串
+				groupdict() # 获取捕获组名作为键，对应内容作为值的字典
+				groups() 	# 获取每个子组匹配内容
+
+	>>> flags参数的使用
+		通过re直接调用的方法，需要使用flags参数
+		如：re.compile re.findall re.search re.match re.finditer re.fullmatch re.sub re.subn re.split
+		作用：辅助正则表达式，丰富匹配结果
+		可选值：
+			A		ASCII
+			U		UNICODE
+
+			I 		IGNORECASE		# 匹配时忽略大小写
+			S 		DOTALL			# 作用于元字符'.',使其可以匹配换行
+			M 		MULTILINE		# 作用于^ $,使其可以匹配每一行开头结尾位置
+
+			X		VERBOSE			# 可以给正则添加注释
+			L 		LOCALE			
+			T		TEMPLATE
+		注：当使用多个标志位时，使用按位或‘|‘连接
+			e.g. flags = re.I | re.S

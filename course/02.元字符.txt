@@ -1,0 +1,136 @@
+元字符的使用
+
+	1. 普通字符
+		元字符：a b c
+		匹配规则：每个字符匹配对应的字符
+		示例：In : re.findall('hello','hello world')
+			 Out: ['hello']
+	2. ‘或’	
+		元字符：|
+		匹配规则：匹配|两边任意一个正则表达式
+		示例：In : re.findall('ab|cd','abcdefghicdkasbcab')
+			 Out: ['ab', 'cd', 'cd', 'ab']
+	3. 匹配单个字符
+		元字符：.
+		匹配规则：匹配除换行外的任意字符
+		示例：f.o 	--> foo fao f@o f o ...
+			In : re.findall('f.o','foo is not fao')
+			Out: ['foo', 'fao']
+			In : re.findall('....','hel\nlo')
+			Out: []		# 换行无法匹配
+	4. 匹配开始位置
+		元字符：^
+		匹配规则：匹配目标字符串的开头位置
+		示例：In : re.findall('ab','cab')
+			 Out: ['ab']
+			 In : re.findall('^ab','cab')
+			 Out: []
+	5. 匹配结束位置
+		元字符：$
+		匹配规则：匹配字符串的结束位置
+		示例：In : re.findall('Tom$','Tom is a boy')
+		 	 Out: []
+		 	 In : re.findall('Tom$','hi,Tom')
+			 Out: ['Tom']
+	6. 匹配重复
+		元字符：*
+		匹配规则：匹配前面的字符出现0次或多次
+		示例：fo* --> foooo...	其中f 到foo...均为匹配项
+			In : re.findall('fo*','fasefosafoooaawf')
+			Out: ['f', 'fo', 'fooo', 'f']
+	7. 匹配重复
+		元字符：+
+		匹配规则：匹配前面的字符出现1次或多次
+		示例：fo+ --> fo fooo...
+			In : re.findall('fo+','fasefosafoooaawf')
+			Out: ['fo', 'fooo']
+	8. 匹配重复
+		元字符：？
+		匹配规则：匹配前面的字符出现0次或1次
+		示例：fo? --> f fo
+			In : re.findall('fo?','fofoooffofoo')
+			Out: ['fo', 'fo', 'f', 'fo', 'fo']
+	9. 匹配重复
+		元字符：{n}
+		匹配规则：匹配指定的重复次数
+		示例：fo{3} --> fooo
+			In : re.findall('fo{3}','fofoooffoo')
+			Out: ['fooo']
+	10. 匹配重复
+		元字符：{m,n}
+		匹配规则：匹配前面的正则表达式m~n次（包括m,n次）
+		示例：In : re.findall('fo{2,3}','fofoooffoo')
+			 Out: ['fooo', 'foo']
+	11. 匹配字符集
+		元字符：[字符集]
+		匹配规则：匹配任意一个字符集中的字符
+		* 有[a-z],[A-Z],[0-9],[abc0-9]写法
+		示例：[abc123] --> a b c 1 2 3 但不能匹配ab,12
+			匹配以大写字母开头小写结尾的单词：^[A-Z][a-z]*
+			In : re.findall('^[A-Z][a-z]*','Tom')
+			Out: ['Tom']
+			In : re.findall('[_0-9a-z]+','port_007')
+			Out: ['port_007']
+	12. 匹配字符集
+		元字符：[^...]
+		匹配规则：字符集取非，除了列出的字符之外任意一个字符
+		[^abc] --> 除a b c 任意字符
+		示例：In : re.findall('[^0-9a-z]','portA01_007abc')
+			 Out: ['A', '_']
+			In : re.findall('[^ ]+','You are a little boy')
+			Out: ['You', 'are', 'a', 'little', 'boy']
+	13. 匹配任意（非）数字字符
+		元字符：\d \D
+		匹配规则：\d 匹配任意数字字符 --> [0-9]
+				\D 匹配任意非数字字符 --> [^0-9]
+		示例：
+			In : re.findall('\D+','num13881389284')
+			Out: ['num']
+
+			In : re.findall('\d+','num13881389284')
+			Out: ['13881389284']
+	14. 匹配任意普通字符
+		元字符：\w \W
+		匹配规则：\w 普通字符（数字、字母、下划线，utf-8汉字）
+				\W 非普通字符
+		示例：
+			In : re.findall('\w+','num!138_ac#dv12@sefe%dvdv&scs')
+			Out: ['num', '138_ac', 'dv12', 'sefe', 'dvdv', 'scs']
+			In : re.findall('\W+','num!138_ac#dv12@sefe%dvdv&scs')
+			Out: ['!', '#', '@', '%', '&']
+	15. 匹配任意（非）空字符
+		元字符：\s \S
+		匹配规则：\s 匹配任意空字符  [ \r\t\n\v\f]
+				\S 匹配任意非空字符,除以上字符
+		示例：
+			In : re.findall('[\S*\s*\S]+','hello this is Tom')
+			Out: ['hello this is Tom']
+	16. 匹配字符串位置
+		元字符：\A \Z
+		匹配规则：\A 匹配字符串开头位置 ^
+				\Z 匹配字符串结尾位置 $
+		示例：见^,$
+	* 绝对匹配：正则表达式要完全匹配目标字符串内容，
+		在正则表达式开始和结束位置加上^ $(或\A \Z)
+		这样正则表达式必须匹配整个目标字符串才会有结果匹配
+		示例：
+			In : re.findall('^[\da-z]*$','ca1234scac')
+			Out: ['ca1234scac']
+	17. 匹配（非）单词边界
+		元字符：\b \B
+		匹配规则：\b 匹配单词边界位置 	
+				\B 匹配非单词边界位置
+		单词边界：普通字符和非普通字符交界认为是单词边界
+		示例：
+			In : re.findall(r'\bis','This is a boy')
+			Out: ['is']
+
+	元字符总结：
+		1. 匹配单个字符
+			a . \d \D \s \S \w \W [...] [^...]
+		2. 匹配重复
+			* + ? {n} {m,n}
+		3. 匹配位置
+			^ $ \A \Z \b \B
+		4. 其他
+			| () \

@@ -1,0 +1,19 @@
+正则表达式转义
+
+	正则中的特殊符号
+		. * + ? ^ $ [] {} () | \
+	正则表达式如果匹配特殊字符需要加\表达转义
+	示例：
+		In : re.findall('\\$\\d+','$10')
+		Out: ['$10']
+		>>>	正则表达式			正则 			目标字符串	
+								\$\d+			$10	
+			python				pattern			string
+								'\\$\\d+'		'$10'
+			raw 				r'\$\d+'		'$10'
+	raw字串：原始字符串对内容不解释转义，就表达内容原本含义
+		示例：
+			In : re.findall(r'\bis','This is a boy')
+			Out: ['is']
+			In : re.findall('\\bis','This is a boy')
+			Out: ['is']

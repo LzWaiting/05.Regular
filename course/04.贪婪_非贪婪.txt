@@ -1,0 +1,12 @@
+贪婪与非贪婪
+	
+	贪婪模式：正则表达式的重复匹配总是尽可能多的向后匹配更多内容
+		* + ? {m,n}
+		示例：
+			In : re.findall('ab*','abbbbbbbb')
+			Out: ['abbbbbbbb']
+	非贪婪模式（懒惰模式）：尽可能少的匹配内容
+		贪婪 --> 非贪婪 *? +? ?? {m,n}?
+		示例：
+			In : re.findall('ab+?','abbbbbbbb')
+			Out: ['ab']

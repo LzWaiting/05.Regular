@@ -1,0 +1,44 @@
+正则表达式子组
+
+	子组：
+		可以使用()为正则表达式建立子组，子组可以看做是正则表达式内部操作的一个整体
+		示例：
+			In : re.search(r'(ab)*','ababababab').group()
+			Out: 'ababababab'
+	* 子组是在正则表达式整体匹配到内容的前提下才会发挥作用，它不影响正则表达式整体去匹配目标内容这一原则
+		示例：
+			In : re.search(r'(ab)+\d+','abab123a').group()
+			Out: 'abab123'
+	子组作用
+		1. 作为内部整体可以改变某些元字符的行为
+			示例：
+				In : re.search(r'\w+@\w+\.(com|cn)','abc@123.com').group()
+				Out: 'abc@123.com'
+				In : re.search(r'\w+@\w+\.(com|cn)','abc@123.cn').group()
+				Out: 'abc@123.cn'
+		2. 子组在某些操作中可以单独提取出匹配内容
+			示例：
+				In : re.search(r'(https|http|ftp)://\S*','https://www.baidu.com').group()
+				Out: 'https://www.baidu.com'
+				In : re.search(r'(https|http|ftp)://\S*','https://www.baidu.com').group(1)
+				Out: 'https'
+	子组使用注意事项
+		1. 一个正则表达式中可以有多个子组
+		2. 子组一般由外到内，由左到右称之为第一，第二，第三...子组
+			示例：
+				In : re.search(r'((ab)c(de))','abcdefg').group(1)
+				Out: 'abcde'
+				In : re.search(r'((ab)c(de))','abcdefg').group(2)
+				Out: 'ab'
+				In : re.search(r'((ab)c(de))','abcdefg').group(3)
+				Out: 'de'
+		3. 子组不能重叠，嵌套也不宜很多
+	子组扩展
+		捕获组 和 非捕获组
+		捕获组格式：（？P<name>pattern）
+		作用：可以通过组名更方便获取某组内容
+		示例：
+			In : re.search(r'(?P<hao>ab)c','abcdefg').group()
+			Out: 'abc'
+			In : re.search(r'(?P<hao>ab)c','abcdefg').group('hao')
+			Out: 'ab'
